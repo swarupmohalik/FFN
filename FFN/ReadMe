@@ -1,1 +1,16 @@
+FNN : Fast Falsification of Neural Networks using Property Directed Testing
+----------------------------------------------------------------------------
+FNN
+  ---cpp
+  ---python
+  ---Script
+  ---Result 
 
+cpp  : cpp files to process .nnet file and evaluate network
+
+python : Contains python source codes for FNN
+
+Script : 
+        Refer ReadMe file kept in Script directory
+
+Note: Since FFN has randomization, results may vary accross the runs.
