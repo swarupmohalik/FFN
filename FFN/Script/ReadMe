@@ -1,1 +1,23 @@
+./install_tool.sh
 
+./prepare_instance.sh v1 benchmark_Indentifier onnxFilePath vnnlibPath
+Arguments :
+v1 : A version string ,
+benchmark_Indentifier : a benchmark identifier string such as "acasxu"
+onnxFilePath : path to the .onnx file 
+vnnibPath : path to .vnnlib file. 
+
+./prepare_instance.sh 1.0 acas_xu ../../benchmarks/acasxu/ACASXU_run2a_1_2_batch_2000.onnx ../../benchmarks/acasxu/prop_2.vnnlib 
+
+
+./run_instance.sh v1 benchmark_Indentifier onnxFilePath vnnlibPath resultPath timeout
+Arguments :
+v1 : A version string ,
+benchmark_Indentifier : a benchmark identifier string such as "acasxu"
+onnxFilePath : path to the .onnx file 
+vnnibPath : path to .vnnlib file. 
+resultPath : path to result file
+timeput : Timeout in seconds
+
+Example:
+./run_instance.sh 1.1 acas_xu ../../benchmarks/acasxu/ACASXU_run2a_1_2_batch_2000.onnx ../../benchmarks/acasxu/prop_2.vnnlib ../Results/result 60
