@@ -8,16 +8,17 @@ echo "timeout:: " $6
 propFile=$4
 
 echo $4| grep "prop_6.vnnlib" 
+propNum=`echo $propFile|cut -d "_" -f2|cut -d "." -f1`
 if [ $? == 0 ]   
 then     
 propFile="prop_6a.vnnlib"
+echo $propFile
 fi
 
 grep assert $propFile|grep -v "Y" | head -10|cut -d " " -f4|cut -d ")" -f1>inputRangeFile
 lno=`grep -n "assert" $propFile|head -n 11|tail +11|cut -d : -f1`
 cat $propFile|tail +$lno>propSpecFile
 
-propNum=`echo $propFile|cut -d "_" -f2|cut -d "." -f1`
 totTm=0.0
 totSmpl=0
 timeoutFlag=0
