@@ -14,6 +14,8 @@ from random import randint
 import sys
 sys.path.append('..')
 
+numRuns=50
+numSamples=100
 
 def sampling(onnxModel,inVals,numOutputs):
    nnet_handle = backend.prepare(onnxModel, device="CPU")
@@ -42,7 +44,8 @@ def learning(cpos,cneg,iRange,numInputs):
 
 def makeSample(onnxModel,numInputs,numOutputs,mat1,samples,start_time,pNum,num,propSpec):
     sampleInputList=[]
-    numSamples=numInputs*30   # 30 times of number of inputs
+    #numSamples=numInputs*30   # 30 times of number of inputs
+    #numSamples=150   # fixed for all benchmarks
     for k in range(numSamples):
         j=0
         while( j < 5):
@@ -70,7 +73,7 @@ def runSample(onnxModel,numInputs,numOutputs,mat1,tAndOT,start_time,propSpec, pr
     oldPosSamples=[]
     target = tAndOT[0]
     objectiveType = tAndOT[1]
-    while (k != 100):
+    while (k != numRuns):
         samples=[]
         posSamples=[]
         negSamples=[]
@@ -87,7 +90,7 @@ def runSample(onnxModel,numInputs,numOutputs,mat1,tAndOT,start_time,propSpec, pr
         for i in range(numInputs):
             if ( mat1[i][1] - mat1[i][0] > 0.000001):
                flag=True
-               break;
+               break
         if( flag == False):
            print("\n\n !!! No further sampling Possible for this iteration!!!")
            timeTaken = (time.process_time() - start_time)
@@ -99,6 +102,7 @@ def runSample(onnxModel,numInputs,numOutputs,mat1,tAndOT,start_time,propSpec, pr
 
 #Main function
 
+start_time = time.process_time()
 inFile=sys.argv[1]
 print(inFile)
 propNum = sys.argv[2]
@@ -132,10 +136,9 @@ print("Num Outputs: %d"%numOutputs)
 
 
 random.seed()
-start_time = time.process_time()
 runSample(onnxModel,numInputs,numOutputs,mat1,targetAndType,start_time,propSpec, propNum)
 timeTaken = (time.process_time() - start_time)
-print("Time taken :: %.14f" %(timeTaken))
+print("Time taken :: %.6f" %(timeTaken))
 
 
 

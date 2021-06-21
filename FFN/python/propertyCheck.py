@@ -30,7 +30,6 @@ def checkProperty(prop,vals,pSpec):
         a="Y_"+str(i)
         val="{:.20f}".format(vals[i])
         pSp=pSp.replace(a, str(val))
-    print("New",pSp)
         
     f = open("test.smt", "w")
     f.write(pSp)
