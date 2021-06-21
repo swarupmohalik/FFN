@@ -1,17 +1,22 @@
-# Dockerfile for nnenum
-#
-# To build image:
-# sudo docker build . -t ffn_image
-#
-# To get a shell after building the image:
-# sudo docker run -i -t ffn_image bash
+# Dockerfile for vnncomp 2021
+# this is an example that uses the tool_example scripts
+
+FROM ubuntu:20.04
+
+RUN echo "Starting..."
+RUN apt-get update && apt-get install -y bc git # bc is used in vnncomp measurement scripts
+
+################## install tool
 
 
-FROM python:3.6.9
-COPY ./requirements.txt /FFN/requirements.txt
-WORKDIR /FFN
-RUN apt-get update
-RUN apt-get -y install bc
-RUN pip3 install -r requirements.txt
-COPY . /FFN
-ENV PYTHONPATH=$PYTHONPATH:/FFN
+ARG TOOL_NAME=vnnComp_2021
+ARG REPO=https://github.com/DMoumita/vnnComp_2021.git 
+ARG COMMIT=48850a9b7e4c68e1dd59c179d4f5fe6501e37cb0
+ARG SCRIPTS_DIR=vnncomp_scripts
+
+RUN git clone $REPO
+RUN cd $TOOL_NAME && git checkout $COMMIT && cd ..
+RUN /$TOOL_NAME/$SCRIPTS_DIR/install_tool.sh v1
+
+#################### run vnncomp
+
