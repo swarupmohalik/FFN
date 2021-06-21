@@ -1,4 +1,6 @@
 rm Report_all
+ls ../benchmarks/acasxu/*.onnx>netList
+ls ../benchmarks/acasxu/*.vnnlib>vnnFile
 cat vnnFile | while read vnn
 do
    echo $vnn
@@ -9,4 +11,5 @@ do
    done
 done
    
-   
+rm netList vnnFile 
+  
