@@ -7,12 +7,11 @@ echo "timeout:: " $6
 
 propFile=$4
 
-echo $4| grep "prop_6.vnnlib" 
 propNum=`echo $propFile|cut -d "_" -f2|cut -d "." -f1`
+echo $4| grep "prop_6.vnnlib" 
 if [ $? == 0 ]   
 then     
 propFile="prop_6a.vnnlib"
-echo $propFile
 fi
 
 grep assert $propFile|grep -v "Y" | head -10|cut -d " " -f4|cut -d ")" -f1>inputRangeFile
