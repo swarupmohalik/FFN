@@ -11,12 +11,12 @@ RUN apt-get update && apt-get install -y bc git # bc is used in vnncomp measurem
 
 ARG TOOL_NAME=vnnComp_2021
 ARG REPO=https://github.com/DMoumita/vnnComp_2021.git 
-ARG COMMIT=48850a9b7e4c68e1dd59c179d4f5fe6501e37cb0
+ARG COMMIT=bd3b8d36378d90b2e1d81141160aaf6bee6a93a4
 ARG SCRIPTS_DIR=vnncomp_scripts
 
 RUN git clone $REPO
 RUN cd $TOOL_NAME && git checkout $COMMIT && cd ..
-RUN /$TOOL_NAME/$SCRIPTS_DIR/install_tool.sh v1
+RUN sudo /$TOOL_NAME/$SCRIPTS_DIR/install_tool.sh v1
 
 #################### run vnncomp
 
