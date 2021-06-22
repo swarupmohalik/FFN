@@ -3,7 +3,7 @@ echo "benchmark:: " $2
 echo "network path:: " $3
 echo "vnnlib file path:: " $4
 echo "result file path:: " $5
-echo "timeout:: " $6
+echo "timeout:: MMMM" $6
 
 export TOOL_PATH=$PWD
 echo "MOUMITA" $TOOL_PATH
