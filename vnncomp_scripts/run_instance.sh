@@ -1,3 +1,5 @@
+
+set -xv
 echo "Version: " $1
 echo "benchmark:: " $2
 echo "network path:: " $3
