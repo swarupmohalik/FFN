@@ -16,7 +16,7 @@ apt install software-properties-common
 add-apt-repository ppa:deadsnakes/ppa
 apt install python3.6.9
 apt install python3-pip
-
+apt-get install protobuf-compiler libprotoc-dev
 
 pip3 install "onnx==1.8.0"
 pip3 install numpy
