@@ -27,7 +27,7 @@ timeoutFlag=0
 timeout=0
 while(true)
 do
-  python3 vnncomp2021/FFN/python/sampleEval.py inputRangeFile $propNum propSpecFile  $3 >A
+  python3 vnncomp2021/FFN/python/sampleEval.py inputRangeFile $propNum propSpecFile  $3 2</dev/null>A
   cat A
   tm=`grep "Time" A |cut -d " " -f4`
   totTm=`echo $tm + $totTm | bc`
