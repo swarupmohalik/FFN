@@ -5,7 +5,7 @@ echo "vnnlib file path:: " $4
 echo "result file path:: " $5
 echo "timeout:: " $6
 
-export TOOL_PATH=$PWD
+export TOOL_PATH=$PWD/..
 echo $TOOL_PATH
 propFile=$4
 
