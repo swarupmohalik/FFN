@@ -1,5 +1,5 @@
 
-set -xv
+
 echo "Version: " $1
 echo "benchmark:: " $2
 echo "network path:: " $3
@@ -14,7 +14,7 @@ propNum=`echo $propFile|cut -d "_" -f2|cut -d "." -f1`
 echo $4| grep "prop_6.vnnlib" 
 if [ $? -eq 0 ]   
 then     
-propFile="prop_6a.vnnlib"
+propFile="vnncomp2021/FFN/prop_6a.vnnlib"
 fi
 
 grep assert $propFile|grep -v "Y" | head -10|cut -d " " -f4|cut -d ")" -f1>inputRangeFile
@@ -53,7 +53,7 @@ do
   then
     if [ $propFile -eq "prop_6a.vnnlib" ]
     then
-        propFile="prop_6b.vnnlib"
+        propFile="vnncomp2021/FFN/prop_6b.vnnlib"
 	totTm=0.0
 	totSmpl=0
 	timeoutFlag=0
