@@ -18,7 +18,7 @@ DIR=$(dirname $(dirname $(realpath $0)))
 #apt install python3-pip
 #apt-get install protobuf-compiler libprotoc-dev
 
-pip3 install "onnx==1.8.0"
+pip3 install "onnx==1.7.0"
 pip3 install numpy
 pip3 install z3-solver
 pip3 install onnxruntime
