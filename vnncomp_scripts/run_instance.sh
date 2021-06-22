@@ -12,7 +12,7 @@ propFile=$4
 
 propNum=`echo $propFile|cut -d "_" -f2|cut -d "." -f1`
 echo $4| grep "prop_6.vnnlib" 
-if [ $? == 0 ]   
+if [ $? -eq 0 ]   
 then     
 propFile="prop_6a.vnnlib"
 fi
@@ -32,7 +32,7 @@ do
   tm=`grep "Time" A |cut -d " " -f4`
   totTm=`echo $tm + $totTm | bc`
   grep "Number of samples ::" A 1</dev/null
-  if [ $? == 0 ]    
+  if [ $? -eq 0 ]    
   then     
     smpl=`grep "Number of samples ::" A |cut -d " " -f6`
     totSmpl=$(($smpl + $totSmpl))
@@ -40,7 +40,7 @@ do
     smpl=0
   fi
   grep "Adversarial !" A  1</dev/null      
-  if [ $? == 0 ]   
+  if [ $? -eq 0 ]   
   then     
     echo ADVERSARIAL FOUND :: Time :: $totTm :: NUMSAMPLE :: $totSmpl>R
     echo ADVERSARIAL >>R1
@@ -49,9 +49,9 @@ do
     totSmpl=$(($totSmpl+1500))
   fi       
   timeout=`echo "$totTm > $6"|bc`
-  if [ $timeout  == 1 ]
+  if [ $timeout -eq 1 ]
   then
-    if [ $propFile == "prop_6a.vnnlib" ]
+    if [ $propFile -eq "prop_6a.vnnlib" ]
     then
         propFile="prop_6b.vnnlib"
 	totTm=0.0
@@ -65,7 +65,7 @@ do
     break
   fi
 done    
-if [ $timeoutFlag  == 1 ]   
+if [ $timeoutFlag  -eq 1 ]   
 then
   echo TIMEOUT  FOUND :: Time :: $tm :: NUMSAMPLE :: $s1>R
   echo TIMEOUT >>R1
@@ -76,7 +76,7 @@ else
   ns=`grep "NUMSAMPLE" R |cut -d " " -f10`
 fi
 grep "ADVERSARIAL" R1 1</dev/null      
-if [ $? == 0 ]   
+if [ $? -eq 0 ]   
 then     
 echo $4  ::  $3 ::  ADVERSARIAL FOUND ::  Time :: $nt :: NUMSAMPLE :: $ns >>Report_all
 echo violated >$5
