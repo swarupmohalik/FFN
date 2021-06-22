@@ -11,8 +11,9 @@ echo "Installing $TOOL_NAME"
 DIR=$(dirname $(dirname $(realpath $0)))
 
 
-apt-get update
-apt install python3-pip
+apt-get update -y
+apt-get install -y python3
+apt install -y python3-pip
 #apt-get install protobuf-compiler libprotoc-dev
 
 pip3 install "onnx==1.7.0"
