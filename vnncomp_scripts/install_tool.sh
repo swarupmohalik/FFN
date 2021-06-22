@@ -11,7 +11,7 @@ echo "Installing $TOOL_NAME"
 DIR=$(dirname $(dirname $(realpath $0)))
 
 apt-get update &&
-apt-get install -y python3 python3-pip &&
+apt-get install -y python3.6.9 python3-pip &&
 
 pip3 install "onnx==1.8.0"
 pip3 install numpy
