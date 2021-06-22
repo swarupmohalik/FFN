@@ -20,7 +20,7 @@ fi
 grep assert $propFile|grep -v "Y" | head -10|cut -d " " -f4|cut -d ")" -f1>inputRangeFile
 lno=`grep -n "assert" $propFile|head -n 11|tail +11|cut -d : -f1`
 cat $propFile|tail +$lno>propSpecFile
-ls FFN/*
+ls *
 totTm=0.0
 totSmpl=0
 timeoutFlag=0
