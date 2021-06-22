@@ -31,7 +31,7 @@ do
   tm=`grep "Time" A |cut -d " " -f4`
   totTm=`echo $tm + $totTm | bc`
   grep "Number of samples ::" A 1</dev/null
-  if [ $? == 0 ]   
+  if [ $? == 0 ]    
   then     
     smpl=`grep "Number of samples ::" A |cut -d " " -f6`
     totSmpl=$(($smpl + $totSmpl))
