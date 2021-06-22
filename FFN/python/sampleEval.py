@@ -104,14 +104,12 @@ def runSample(onnxModel,numInputs,numOutputs,mat1,tAndOT,start_time,propSpec, pr
 
 start_time = time.process_time()
 inFile=sys.argv[1]
-print("Mou", inFile)
 propNum = sys.argv[2]
 str2 = [line.strip() for line in open(inFile).readlines()]
 mat1=numpy.array(str2,float)
 mat1=mat1.reshape(int(len(str2)/2),2)
 propSpec=[line.strip() for line in open(sys.argv[3]).readlines()]
 targetAndType = propCheck.findObjectiveFuncionType(propNum)
-print(targetAndType)
 #loading onnx model
 onnxModel = onnx.load(sys.argv[4])
 graph = onnxModel.graph
