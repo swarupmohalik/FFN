@@ -17,17 +17,17 @@ then
 propFile="prop_6a.vnnlib"
 fi
 
-grep assert $propFile|grep -v "Y" | head -10|cut -d " " -f4|cut -d ")" -f1>FFN/inputRangeFile
+grep assert $propFile|grep -v "Y" | head -10|cut -d " " -f4|cut -d ")" -f1>inputRangeFile
 lno=`grep -n "assert" $propFile|head -n 11|tail +11|cut -d : -f1`
-cat $propFile|tail +$lno>FFN/propSpecFile
-
+cat $propFile|tail +$lno>propSpecFile
+ls FFN/*
 totTm=0.0
 totSmpl=0
 timeoutFlag=0
 timeout=0
 while(true)
 do
-  python FFN/python/sampleEval.py FFN/inputRangeFile $propNum FFN/propSpecFile  $3 2</dev/null>A
+  python FFN/python/sampleEval.py inputRangeFile $propNum propSpecFile  $3 2</dev/null>A
   tm=`grep "Time" A |cut -d " " -f4`
   totTm=`echo $tm + $totTm | bc`
   grep "Number of samples ::" A 1</dev/null
@@ -83,5 +83,5 @@ else
 echo $4  ::  $3 ::  TIMEOUT >>Report_all
 echo timeout >$5
 fi       
-rm -f A R R1 test.smt FFN/inputRangeFile FFN/propSpecFile
+rm -f A R R1 test.smt inputRangeFile propSpecFile
 
