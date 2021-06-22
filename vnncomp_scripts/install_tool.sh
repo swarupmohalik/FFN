@@ -11,11 +11,11 @@ echo "Installing $TOOL_NAME"
 DIR=$(dirname $(dirname $(realpath $0)))
 
 
-#apt update
-#apt install software-properties-common
-#add-apt-repository ppa:deadsnakes/ppa
-#apt install python3.6
-#apt install python3-pip
+apt-get update
+apt-get install software-properties-common
+add-apt-repository ppa:deadsnakes/ppa
+apt-get install python3.6
+apt install python3-pip
 #apt-get install protobuf-compiler libprotoc-dev
 
 pip3 install "onnx==1.7.0"
