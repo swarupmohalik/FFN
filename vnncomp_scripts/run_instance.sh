@@ -5,8 +5,9 @@ echo "vnnlib file path:: " $4
 echo "result file path:: " $5
 echo "timeout:: " $6
 
-export TOOL_PATH=$PWD/..
-echo $TOOL_PATH
+export TOOL_PATH=$PWD
+echo "MOUMITA" $TOOL_PATH
+ls $TOOL_PATH/*
 propFile=$4
 
 propNum=`echo $propFile|cut -d "_" -f2|cut -d "." -f1`
