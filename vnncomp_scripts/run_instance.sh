@@ -50,7 +50,7 @@ do
   timeout=`echo "$totTm > $6"|bc`
   if [ $timeout -eq 1 ]
   then
-    if [ $propFile -eq "prop_6a.vnnlib" ]
+    if [ $propFile -eq "vnncomp2021/FFN/prop_6a.vnnlib" ]
     then
         propFile="vnncomp2021/FFN/prop_6b.vnnlib"
 	totTm=0.0
