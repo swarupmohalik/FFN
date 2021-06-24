@@ -1,4 +1,4 @@
-# Dockerfile for nnenum
+# Dockerfile for FFN
 #
 # To build image:
 # sudo docker build . -t ffn_image
