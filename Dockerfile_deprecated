@@ -6,7 +6,6 @@
 # To get a shell after building the image:
 # sudo docker run -i -t ffn_image bash
 
-
 FROM python:3.6.9
 COPY ./requirements.txt /FFN/requirements.txt
 WORKDIR /FFN
