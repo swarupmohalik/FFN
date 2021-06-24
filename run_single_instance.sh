@@ -3,7 +3,7 @@
 #
 # args: 'v1' (version string), tool_scripts_folder, category, onnx_file, vnnlib_file, timeout, result_csv_file
 
-VERSION_STRING=v1
+VERSION_STRING=v1 
 
 # check arguments
 if [ "$1" != ${VERSION_STRING} ]; then
