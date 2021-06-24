@@ -1,4 +1,3 @@
-
 #!/bin/bash
 # run code in docker
 
@@ -37,5 +36,3 @@ docker stop $CONTAINER
 docker rm $CONTAINER
 
 echo "Done. Result file ${RESULT_FILE} should be in the local folder if there were no errors."
-
-
