@@ -14,7 +14,7 @@ propNum=`echo $propFile|cut -d "_" -f2|cut -d "." -f1`
 echo $4| grep "prop_6.vnnlib" 
 if [ $? -eq 0 ]   
 then     
-propFile="vnncomp2021/FFN/prop_6a.vnnlib"
+propFile="FFN/FFN/prop_6a.vnnlib"
 fi
 
 grep assert $propFile|grep -v "Y" | head -10|cut -d " " -f4|cut -d ")" -f1>inputRangeFile
@@ -27,7 +27,7 @@ timeoutFlag=0
 timeout=0
 while(true)
 do
-  python3 vnncomp2021/FFN/python/sampleEval.py inputRangeFile $propNum propSpecFile  $3 2</dev/null>A
+  python3 FFN/FFN/python/sampleEval.py inputRangeFile $propNum propSpecFile  $3 2</dev/null>A
   tm=`grep "Time" A |cut -d " " -f4`
   totTm=`echo $tm + $totTm | bc`
   grep "Number of samples ::" A 1</dev/null
@@ -53,7 +53,7 @@ do
     S=`echo $propFile|grep "prop_6a"`
     if [ $? -eq 0 ]
     then
-        propFile="vnncomp2021/FFN/prop_6b.vnnlib"
+        propFile="FFN/FFN/prop_6b.vnnlib"
 	totTm=0.0
 	totSmpl=0
 	timeoutFlag=0
@@ -78,10 +78,10 @@ fi
 grep "ADVERSARIAL" R1 1</dev/null      
 if [ $? -eq 0 ]   
 then     
-echo $4  ::  $3 ::  ADVERSARIAL FOUND ::  Time :: $nt :: NUMSAMPLE :: $ns >>Report_all
+#echo $4  ::  $3 ::  ADVERSARIAL FOUND ::  Time :: $nt :: NUMSAMPLE :: $ns >>Report_all
 echo violated >$5
 else
-echo $4  ::  $3 ::  TIMEOUT >>Report_all
+#echo $4  ::  $3 ::  TIMEOUT >>Report_all
 echo timeout >$5
 fi       
 rm -f A R R1 test.smt inputRangeFile propSpecFile
