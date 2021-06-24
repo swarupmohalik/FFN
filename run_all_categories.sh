@@ -31,7 +31,6 @@ if [[ $RESULT_CSV_FILE != *csv ]]; then
 	echo "result csv file '$RESULT_CSV_FILE' should end in .csv"
 	exit 1
 fi
-
 if [ ! -d $VNNCOMP_FOLDER ] 
 then
     echo "VNNCOMP directory does not exist: '$VNNCOMP_FOLDER'" 
