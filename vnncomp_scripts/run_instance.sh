@@ -31,7 +31,7 @@ timeout=0
 while(true)
 do
   python3 FFN/FFN/python/sampleEval.py inputRangeFile $propNum propSpecFile  $3 2</dev/null>A
-  if [ $? != 0 ]
+  if [ $? -ne 0 ]
   then
      echo error >$5
      exit 0
