@@ -6,18 +6,22 @@ def findObjectiveFuncionType(prop):
     if (prop == "1" or prop == "2" or prop == "6" or prop == "8" or prop == "10"):
         target= 0
         objType = 0 # 0 for maximize
-    if (prop == "3" or prop == "4"):
+    elif (prop == "3" or prop == "4"):
         target= 0
         objType = 1 # 1 for minimize
-    if (prop == "5") :
+    elif (prop == "5") :
         target= 4
         objType = 0 # 1 for minimize
-    if (prop == "7" ):
+    elif (prop == "7" ):
         target= 3
         objType = 1 # 1 for minimize
-    if (prop == "9"):
+    elif (prop == "9"):
         target= 3
         objType = 0 # 1 for maximize
+    else:
+        target= 0 #default
+        objType = 0 # 1 for maximize default
+        
     output=[]
     output.append(target)
     output.append(objType)
