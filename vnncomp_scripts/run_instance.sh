@@ -1,5 +1,3 @@
-
-
 echo "Version: " $1
 echo "benchmark:: " $2
 echo "network path:: " $3
@@ -14,7 +12,7 @@ propNum=`echo $propFile|cut -d "_" -f2|cut -d "." -f1`
 echo $4| grep "prop_6.vnnlib" 
 if [ $? -eq 0 ]   
 then     
-propFile="FFN/FFN/prop_6a.vnnlib"
+propFile="FFN_vnncomp2021/FFN/prop_6a.vnnlib"
 fi
 
 grep assert $propFile|grep -v "Y" |grep "X"|cut -d " " -f4|cut -d ")" -f1>inputRangeFile
@@ -29,7 +27,7 @@ timeoutFlag=0
 timeout=0
 while(true)
 do
-  python3 FFN/FFN/python/sampleEval.py inputRangeFile $propNum propSpecFile  $3 2</dev/null>A
+  python3 FFN_vnncomp2021/FFN/python/sampleEval.py inputRangeFile $propNum propSpecFile  $3 2</dev/null>A
   if [ $? -ne 0 ]
   then
      echo error >$5
@@ -50,7 +48,7 @@ do
     S=`echo $propFile|grep "prop_6a"`
     if [ $? -eq 0 ]
     then
-        propFile="FFN/FFN/prop_6b.vnnlib"
+        propFile="FFN_vnncomp2021/FFN/prop_6b.vnnlib"
 	totTm=0.0
 	timeoutFlag=0
 	timeout=0
