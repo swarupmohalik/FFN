@@ -2,7 +2,7 @@ TOOL_NAME=FFN
 VERSION_STRING=v1
 
 # check arguments
-if [ "$1" != ${VERSION_STRING} ]; then 
+if [ "$1" != ${VERSION_STRING} ]; then
 	echo "Expected first argument (version string) '$VERSION_STRING', got '$1'"
 	exit 1
 fi
