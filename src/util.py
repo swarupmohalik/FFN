@@ -127,9 +127,9 @@ def glue_models(model1, model2):
 
     return onnx_model
 
-def findObjectiveFuncionType(spec):
-   N=dict.fromkeys(range(5),0)
-   M=dict.fromkeys(range(5),0)
+def findObjectiveFuncionType(spec,numOutputs):
+   N=dict.fromkeys(range(numOutputs),0)
+   M=dict.fromkeys(range(numOutputs),0)
    for j in range(len(spec)):
        arr=spec[j][0]
        print(arr)

@@ -154,7 +154,7 @@ box_spec_list = read_vnnlib_simple(vnnlib_filename, numInputs, numOutputs)
 inp_shape = tuple(d.dim_value if d.dim_value != 0 else 1 for d in inp.type.tensor_type.shape.dim)
 status = 'unknown'
 
-targetAndType = findObjectiveFuncionType(box_spec_list[0][1])
+targetAndType = findObjectiveFuncionType(box_spec_list[0][1],numOutputs)
 
 for i in range (len(box_spec_list)):
     box_spec = box_spec_list[i]
