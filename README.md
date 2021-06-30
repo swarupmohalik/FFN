@@ -22,7 +22,8 @@ python run_all_categories.py category result_file_path
 
 Example run:
 
-python run_all_categories.py acasxu Report
+python run_all_categories.py acasxu Report 
+
  ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "acasxu" benchmark category 
  ---After evalauation result is stored in Report
 
