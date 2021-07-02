@@ -3,35 +3,51 @@ import codecs
 import sys
 import time
 
+from src.FFNEvaluation import sampleEval
 pythonProg="src/sampleEval.py"
-ONNXFile=sys.argv[1]
-vnnlibFile=sys.argv[2]
-timeout=float(sys.argv[4])
-totalTime=float(0.0)
-START_TIME=time.time()
-outFile = open(sys.argv[3], "w")
-while(totalTime < timeout) :
-    result = subprocess.run("python " +pythonProg+"  "+  ONNXFile + "  "+ vnnlibFile + ">A", shell=True)
-    END_TIME=time.time()
-    totalTime=END_TIME - START_TIME
-    file1 = open("A", "r")
-    readfile = file1.read()
-    file1.close()
-    print(ONNXFile,vnnlibFile)
-    print("Time elapsed:",totalTime)
-    file2 = open("A", "r")
-    for line in file2:
-        if "Target" in line: 
-           print(line)
-           break
-    file2.close()
-    if "violated" in readfile: 
-       outs=ONNXFile+","+vnnlibFile+", violated, "+str(totalTime)
-       outFile.write(outs)
+
+#Commandline arguments processing
+try:
+    onnxFile = sys.argv[1]
+    vnnlibFile = sys.argv[2]
+except:
+    print ("\n!!! Failed to provide onnx file and vnnlib file path on the command line!")
+    sys.exit(1)  # Exit from program
+
+try:
+    resultFile = sys.argv[3]
+except:
+    print ("\n!!! No result_file path is provided on the command line!")
+    print ("Default result_file is - out.txt")
+    resultFile = "out.txt"
+
+try:
+    timeout = float(sys.argv[4])
+except:
+    print ("\n!!! timeout is not on the command line!")
+    print ("Default timeout is set as - 60 sec")
+    timeout = 60.0
+
+#Variable Initialization
+timeElapsed = float(0.0)
+startTime = time.time()
+
+outFile = open(resultFile, "w")
+
+while(timeElapsed < timeout) :
+    status = sampleEval(onnxFile,vnnlibFile)
+
+    endTime = time.time()
+    timeElapsed = endTime - startTime
+
+    if (status == "violated"):
+       resultStr = status+", "+str(round(timeElapsed,4))
+       print("\nOutput is written in - \"",resultFile,"\"")
+       outFile.write(resultStr)
        outFile.close()
-       exit(0)
-    if (totalTime >= timeout):
-       outs=ONNXFile+","+vnnlibFile+", timeout, "+str(totalTime)
-       outFile.write(outs)
-       outFile.close()
-       exit(0)
+       exit()
+    
+print("\nOutput is written in - \"",resultFile,"\"")
+resultStr ="timeout , "+str(round(timeElapsed,4))
+outFile.write(resultStr)
+outFile.close()
