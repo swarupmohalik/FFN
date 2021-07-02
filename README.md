@@ -18,7 +18,7 @@ Evaluation
 ---------------
 1: To run a all categories
    ------------------------------
-python run_all_categories.py category result_file_path
+python run_all_categories.py <category> <result_file_path>
 
 Example run:
 
@@ -30,7 +30,7 @@ python run_all_categories.py acasxu Report
 
 1: To run a single instance
    ------------------------------
-python run_single_instance.py onnx_file_path vnnlib_file_path result_file_path timeout_parameter
+python run_single_instance.py <onnx_file_path> <vnnlib_file_path> <result_file_path> <timeout_parameter>
 
 
 Example run:
