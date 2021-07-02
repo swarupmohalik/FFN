@@ -148,6 +148,7 @@ def sampleEval(onnx_filename,vnnlib_filename):
 
    #parse vnnlib file 
 
+   print(vnnlib_filename)
    box_spec_list = read_vnnlib_simple(vnnlib_filename, numInputs, numOutputs)
 
    inp_shape = tuple(d.dim_value if d.dim_value != 0 else 1 for d in inp.type.tensor_type.shape.dim)
