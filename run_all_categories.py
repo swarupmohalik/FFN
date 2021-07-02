@@ -1,30 +1,37 @@
 import sys
+import csv
 import subprocess
+from run_single_instance import runSingleInstance
 
-CATEGORY=sys.argv[1]
-ReportFile=sys.argv[2]
-TIMEOUT=60
-ONNX_FILE_PATH="ls benchmarks/"+CATEGORY+"/*.onnx>modelList"
-result=subprocess.check_output(ONNX_FILE_PATH  , shell=True)
-VNNLIB_FILE_PATH="ls benchmarks/"+CATEGORY+"/*.vnnlib>vnnliblist"
-result=subprocess.check_output(VNNLIB_FILE_PATH  , shell=True)
+#Commandline arguments processing
+try:
+    category = sys.argv[1]
+except:
+    category = "test"
+    print ("\n!!! No benchmark category is provided on the command line!")
+    print ("Default benchmark category is taken as - \"test\"")
 
-modelFile = open("modelList","r")
-models = modelFile.readlines()
+try:
+    reportFile = sys.argv[2]
+except:
+    reportFile =" report_"+category+".txt"
+    print ("\n!!! No result_file is provided on the command line!")
+    print (" Taking default result_file - ", reportFile)
 
-propFile = open("vnnliblist","r")
-props = propFile.readlines()
+#Reading cat_instance.csv for .onnx file path, .vnnlib file path and timeout
 
-outFile = open(ReportFile,"w")
-for prop in props :
-   for model in models:
-      prog="python run_single_instance.py" +" "+ model.strip() + "  "+ prop.strip() + " Res " + str(TIMEOUT)
-      result = subprocess.run(prog, shell=True)
-      temp_outFile = open("Res","r")
-      line = temp_outFile.readlines()
-      temp_outFile.close()
-      print(line)
-      outFile.write(line[0]+"\n")
+catInsCsvFile = "benchmarks/"+category+"/"+category+"_instances.csv"
+insCsvFile = open(catInsCsvFile, 'r')
+outFile = open(reportFile, 'w')
+reader = csv.reader(insCsvFile)
+for row in reader:
+    onnxFile = "benchmarks/"+category+"/"+row[0]
+    vnnlibFile = "benchmarks/"+category+"/"+row[1]
+    timeout = row[2]
+    resultStr = runSingleInstance(onnxFile,vnnlibFile,"out.txt",timeout)
+    printStr=onnxFile+","+vnnlibFile+","+resultStr
+    outFile.write(printStr)
+
+insCsvFile.close()
 outFile.close()
-modelFile.close()
-propFile.close()
+
