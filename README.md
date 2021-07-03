@@ -72,12 +72,12 @@ C. Evaluation
    ---------------
 1: To run a single instance
    ------------------------------
-python run_single_instance.py <onnx_file_path> <vnnlib_file_path> <result_file_path> <timeout_parameter>
+python run_single_instance.py <onnx_file_path> <vnnlib_file_path> [result_file_path] [timeout_parameter]
 
 
 Example run:
 
-python run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib result_file 10
+a. python run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib result_file 10
 
  ---It evaluates "acasxu" benchmark Property 2 for network ACASXU_run2a_1_1_batch_2000.nnet
  
@@ -85,17 +85,31 @@ python run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx
  
  ---timeout parameter is set as 10 sec
 
+b. python run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib 
+
+ ---It evaluates "acasxu" benchmark Property 2 for network ACASXU_run2a_1_1_batch_2000.nnet
+ 
+ ---After evaluation, result is stored in default result file - "out.txt"
+ 
+ ---timeout parameter is set as 60 sec(default)
 
 2: To run all instances of a given benchmark category (from "benchmark" folder)
    ---------------------------------------------------------------------------
-python run_all_categories.py  <category> <result_file_path>
+python run_all_categories.py  [category] [result_file_path]
 
 Example run:
 
-python run_all_categories.py acasxu Report 
+a. python run_all_categories.py acasxu Report 
 
  ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "acasxu" benchmark category 
  
  ---After evalauation result is stored in Report
+
+b. python run_all_categories.py 
+
+ ---Default category is - "test"
+ ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "test" benchmark category 
+ 
+ ---After evalauation result is stored in "Report_test.txt" (default)
 
 ***Note: Since FFN has randomization, results may vary accross the runs.
