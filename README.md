@@ -6,26 +6,25 @@ A. Folder structure
 
    1. README
    2. src  -- contains python source files
-   3. benchmarks -- contains diferent benchmark categories
+   3. benchmarks -- contains different benchmark categories
 
       Each category mainly contains - 
 
       a) .onnx files -- NN is given in .onnx file format
 
-      b) .vnnlib files  -- provide normalized input ranges and property specification
+      b) .vnnlib files  -- provide normalized input ranges and property specifications
 
       c) category_instance.csv files -- provide instances to be run for that category 
 
-        Format of category_instance.csv is  -
-        --------------------------------------
-
-        .onnx file path,.vnnlib file path,timeout
+      Format of category_instance.csv is  - ".onnx file path,.vnnlib file path,timeout"
+      -- These file paths provide path for .onnx files and .vnnlib files inside the category 
+      -- To find the absolute path of onnx files and .vnnlib files for this category - 
+              -- need to prepend the path of this category folder before the paths specified in this category_instance.csv
+        
 
    4. run_single_instance.py -- script to run a single instancei, how to run is given in "C"
    5. run_all_categories.py --to run all instances from a given category, how to run us given in "C" 
   
-benchmarks folder
------------------
    
 B: Getting Started
    -------------------------
