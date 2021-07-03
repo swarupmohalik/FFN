@@ -2,27 +2,46 @@ import subprocess
 import codecs
 import sys
 import time
+import signal
 
 from src.FFNEvaluation import sampleEval
 
-def runSingleInstance(onnxFile,vnnlibFile,resultFile,timeout):
+# Register an handler for the timeout
+def handler(signum, frame):
+    raise Exception("kill running :: Timeout occurs")
 
+def runSingleInstanceForAllCategory(onnxFile,vnnlibFile,resultFile,timeout):
+   'called from run_all_catergory.py'
+   # Register the signal function handler
+   signal.signal(signal.SIGALRM, handler)
+
+   # Define a timeout for "runSingleInstance"
+   signal.alarm(int(timeout))
+
+   try:
+       retStatus = runSingleInstance(onnxFile,vnnlibFile,resultFile,timeout)
+       return retStatus
+   except Exception as exc:
+       printStr = "timeout," + str(timeout) + "\n" 
+       print(exc)
+
+def runSingleInstance(onnxFile,vnnlibFile,resultFile,timeout):
    #Variable Initialization
-   timeElapsed = float(0.0)
    startTime = time.time()
 
-   while(timeElapsed < float(timeout)) :
+   while(1):
        status = sampleEval(onnxFile,vnnlibFile)
-
        endTime = time.time()
        timeElapsed = endTime - startTime
+       print("Time elapsed: ",timeElapsed)
 
        if (status == "violated"):
           resultStr = status+", "+str(round(timeElapsed,4))
           return resultStr
     
-   resultStr = "timeout , "+str(round(timeElapsed,4))
+   resultStr = "timeout,"+str(round(timeElapsed,4)) + "\n"
    return resultStr
+
 
 #Main function
 if __name__ == '__main__':
@@ -48,9 +67,24 @@ if __name__ == '__main__':
       print ("Default timeout is set as - 60 sec")
       timeout = 60.0
 
-   retStatus = runSingleInstance(onnxFile,vnnlibFile,resultFile,timeout)
 
-   outFile = open(resultFile, "w")
-   print("\nOutput is written in - \"",resultFile,"\"")
-   outFile.write(retStatus)
-   outFile.close()
+   # Register the signal function handler
+   signal.signal(signal.SIGALRM, handler)
+
+   # Define a timeout for "runSingleInstance"
+   signal.alarm(int(timeout))
+
+   try:
+       retStatus = runSingleInstance(onnxFile,vnnlibFile,resultFile,timeout)
+       outFile = open(resultFile, "w")
+       print("\nOutput is written in - \"{0}\"".format(resultFile))
+       outFile.write(retStatus)
+       outFile.close()
+   except Exception as exc:
+       print("\nOutput is written in - \"{0}\"".format(resultFile))
+       outFile = open(resultFile, "w")
+       printStr = "timeout," + str(timeout) + "\n" 
+       outFile.write(printStr)
+       outFile.close()
+       print(exc)
+
