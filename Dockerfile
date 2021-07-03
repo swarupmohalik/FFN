@@ -6,8 +6,7 @@
 # To get a shell after building the image:
 # sudo docker run -i -t ffn_image bash
 
-FROM ubuntu:20.04
-#FROM python:3.6.9
+FROM ubuntu:18.04
 COPY ./requirements.txt /FFN/requirements.txt
 WORKDIR /FFN
 RUN apt-get update
