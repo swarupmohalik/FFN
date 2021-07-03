@@ -1,4 +1,4 @@
-FNN : Fast Falsification of Neural Networks using Property Directed Testing
+FFN : Fast Falsification of Neural Networks using Property Directed Testing
 ----------------------------------------------------------------------------
 
 A. Folder structure
