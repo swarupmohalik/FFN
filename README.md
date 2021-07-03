@@ -63,8 +63,8 @@ B: Getting Started
      sudo apt update
      sudo apt install python3.6
      sudo apt install python3-pip
-     pip3 install onnx==1.8.0
-     pip3 install onnxruntime==1.8.0
+     pip3 install onnx==1.7.0
+     pip3 install onnxruntime==0.4.0
      pip3 install numpy==1.17.4
 
    
