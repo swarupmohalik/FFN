@@ -4,15 +4,21 @@ FNN : Fast Falsification of Neural Networks using Property Directed Testing
 A. Folder structure
    -------------------
 
-   1. ReadMe
+   1. README
    2. src  -- contains python source files
    3. benchmarks -- contains diferent benchmark categories
-      Each category contains mainly - 
+
+      Each category mainly contains - 
+
       a) .onnx files -- NN is given in .onnx file format
+
       b) .vnnlib files  -- provide normalized input ranges and property specification
+
       c) category_instance.csv files -- provide instances to be run for that category 
+
         Format of category_instance.csv is  -
         --------------------------------------
+
         .onnx file path,.vnnlib file path,timeout
 
    4. run_single_instance.py -- script to run a single instancei, how to run is given in "C"
