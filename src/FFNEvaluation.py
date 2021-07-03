@@ -10,28 +10,29 @@ from random import randint
 import sys
 sys.path.append('..')
 
-from src.vnnlib import read_vnnlib_simple, get_io_nodes
-from src.util import predict_with_onnxruntime, remove_unused_initializers
-from src.util import  findObjectiveFuncionType, checkAndSegregateSamplesForMaximum, checkAndSegregateSamplesForMinimum
+from src.vnnlib import readVnnlib, getIoNodes
+from src.util import predictWithOnnxruntime, removeUnusedInitializers
+from src.util import  findObjectiveFuncionType, checkAndSegregateSamplesForMaximization, checkAndSegregateSamplesForMinimization
 
-numRuns=50
-numSamples=100
+numRuns=100
+numSamples=150
 
-def sampling(onnxModel,inVals,inp_dtype, inp_shape):
-   flatten_order='C'
-   inputs = np.array(inVals, dtype=inp_dtype)
-   inputs = inputs.reshape(inp_shape, order=flatten_order) # check if reshape order is correct
-   assert inputs.shape == inp_shape
+def onnxEval(onnxModel,inVals,inpDtype, inpShape):
+   flattenOrder='C'
+   inputs = np.array(inVals, dtype=inpDtype)
+   inputs = inputs.reshape(inpShape, order=flattenOrder) # check if reshape order is correct
+   assert inputs.shape == inpShape
 
-   output = predict_with_onnxruntime(onnxModel, inputs)
-   flat_out = output.flatten(flatten_order) # check order
-   return flat_out
+   output = predictWithOnnxruntime(onnxModel, inputs)
+   flatOut = output.flatten(flattenOrder) # check order, 'C' for row major order
+   return flatOut
 
 def propCheck(inputs,specs,outputs):
-   res="unknown"
-   for prop_mat, prop_rhs in specs:
-       vec = prop_mat.dot(outputs)
-       sat = np.all(vec <= prop_rhs)
+   res = "unknown"
+
+   for propMat, propRhs in specs:
+       vec = propMat.dot(outputs)
+       sat = np.all(vec <= propRhs)
 
        if sat:
           res = 'violated'
@@ -62,111 +63,125 @@ def learning(cpos,cneg,iRange,numInputs):
                 if ( temp <= iRange[nodeSelect][1] and temp >= iRange[nodeSelect][0]):
                    iRange[nodeSelect][1]=temp
 
-def makeSample(onnxModel,numInputs,inRanges,samples,specs,start_time,inp_dtype, inp_shape):
+
+def makeSample(onnxModel,numInputs,inRanges,samples,specs,inpDtype, inpShape):
     sampleInputList=[]
-    #numSamples=numInputs*30   # 30 times of number of inputs
-    #numSamples=150   # fixed for all benchmarks
     for k in range(numSamples):
         j=0
-        while( j < 5):
+        while (j<5):
             inValues=[]
             for i in range(numInputs):
                 inValues.append(round(random.uniform(inRanges[i][0],inRanges[i][1]),6))
+
+            '''Check for "Duplicate" samples
+               If new samples are in sampleInputList then continues to get other samples
+            '''
             if ( inValues in sampleInputList):
-                #print("Duplicate",j,inValues,sampleInputList)
-                j=j+1
+                #print("Duplicate")
+                j=j+1 #check needed
             else :
                 break
         sampleInputList.append(inValues)
-        sampleVal=sampling(onnxModel,inValues,inp_dtype, inp_shape)
+
+        #onnx model evaluaion with new sampled inputs
+        sampleVal=onnxEval(onnxModel,inValues,inpDtype, inpShape)
+
+        #checking property with onnx evaluation outputs
         retVal=propCheck(inValues,specs,sampleVal)
+
         if retVal == 1: #Adversarial found
             return 1
-        s=[]
+
+        s = []
         s.append(inValues)
         s.append(sampleVal)
         samples.append(s)
     return 0
 
-def runSample(onnxModel,numInputs,numOutputs,inputRange,tAndOT,spec, start_time,inp_dtype, inp_shape):
-    k=0
+def runSample(onnxModel,numInputs,numOutputs,inputRange,tAndOT,spec,inpDtype,inpShape):
+
     oldPosSamples=[]
-    target = tAndOT[0]
-    objectiveType = tAndOT[1]
-    while (k != numRuns):
-        samples=[]
-        posSamples=[]
-        negSamples=[]
-        ret = makeSample(onnxModel,numInputs,inputRange,samples,spec,start_time,inp_dtype,inp_shape)
+    target = tAndOT[0] #target output label for maximization/minimization
+    objectiveType = tAndOT[1] #0 for maximization, 1 for minimization
+
+    for k in range(numRuns):
+        samples = []
+        posSamples = []
+        negSamples = []
+
+        ret = makeSample(onnxModel,numInputs,inputRange,samples,spec,inpDtype,inpShape)
+
         if ( ret == 1): #Adversarial found
            return "violated"
 
         if ( objectiveType == 1) :
-           checkAndSegregateSamplesForMinimum(posSamples,negSamples,samples,oldPosSamples,target)
+           checkAndSegregateSamplesForMinimization(posSamples,negSamples,samples,oldPosSamples,target)
         else:
-           checkAndSegregateSamplesForMaximum(posSamples,negSamples,samples,oldPosSamples,target)
-        oldPosSamples=posSamples
-        flag=False
+           checkAndSegregateSamplesForMaximization(posSamples,negSamples,samples,oldPosSamples,target)
+        oldPosSamples = posSamples
+
+        #Check input ranges for further sampling 
+        #Discintinues if all input ranges are below a theshold value(0.000001)
+        flag = False
         for i in range(numInputs):
             if ( inputRange[i][1] - inputRange[i][0] > 0.000001):
-               flag=True
+               flag = True
                break
+
         if( flag == False):
            print("!!! No further sampling Possible for this iteration!!!")
            print("Inputs are now :: ", inputRange)
            print("STATUS :: unknown")
            return "unknown"
-           #timeTaken = (time.process_time() - start_time)
-           #print("Time taken :: %.4f" %(timeTaken))
-           #exit()
+
         learning(posSamples,negSamples,inputRange,numInputs)
-        k=k+1
     return 
 
 
 #SampleEval function
-def sampleEval(onnx_filename,vnnlib_filename):
-   start_time = time.process_time()
+def sampleEval(onnxFilename,vnnlibFilename):
 
    #onnx model load
-   onnxModel = onnx.load(onnx_filename)
+   onnxModel = onnx.load(onnxFilename)
    onnx.checker.check_model(onnxModel, full_check=True)
-   onnxModel = remove_unused_initializers(onnxModel)
-   inp, out, inp_dtype = get_io_nodes(onnxModel)
-   inp_shape = tuple(d.dim_value if d.dim_value != 0 else 1 for d in inp.type.tensor_type.shape.dim)
-   out_shape = tuple(d.dim_value if d.dim_value != 0 else 1 for d in out.type.tensor_type.shape.dim)
+   onnxModel = removeUnusedInitializers(onnxModel)
+   inp, out, inpDtype = getIoNodes(onnxModel)
+   inpShape = tuple(d.dim_value if d.dim_value != 0 else 1 for d in inp.type.tensor_type.shape.dim)
+   outShape = tuple(d.dim_value if d.dim_value != 0 else 1 for d in out.type.tensor_type.shape.dim)
+   
+
+
    numInputs = 1
    numOutputs = 1
 
-   for n in inp_shape:
+   #Number of inputs
+   for n in inpShape:
        numInputs *= n
 
-   for n in out_shape:
+   #Number of outputs
+   for n in outShape:
        numOutputs *= n
 
-   print(f"\nTesting onnx model with {numInputs} inputs and {numOutputs} outputs")
+   print(f"\nTesting onnx model-\"{onnxFilename}\" with {numInputs} inputs and {numOutputs} outputs for \"{vnnlibFilename}\"")
 
-   #parse vnnlib file 
+   #parsing vnnlib file, get a list of input ranges and property matrix  
+   boxSpecList = readVnnlib(vnnlibFilename, numInputs, numOutputs)
 
-   print(vnnlib_filename)
-   box_spec_list = read_vnnlib_simple(vnnlib_filename, numInputs, numOutputs)
 
-   inp_shape = tuple(d.dim_value if d.dim_value != 0 else 1 for d in inp.type.tensor_type.shape.dim)
-   status = 'unknown'
-
-   targetAndType = findObjectiveFuncionType(box_spec_list[0][1],numOutputs)
+   #find target output label and objective type
+   targetAndType = findObjectiveFuncionType(boxSpecList[0][1],numOutputs)
 
    returnStatus = "timeout"
-   for i in range (len(box_spec_list)):
-       box_spec = box_spec_list[i]
-       inRanges = box_spec[0]
-       specList = box_spec[1]
+
+   for i in range (len(boxSpecList)):
+       boxSpec = boxSpecList[i]
+       inRanges = boxSpec[0]
+       specList = boxSpec[1]
        random.seed()
-       returnStatus = runSample(onnxModel,numInputs,numOutputs,inRanges,targetAndType,specList, start_time,inp_dtype, inp_shape)
+       returnStatus = runSample(onnxModel,numInputs,numOutputs,inRanges,targetAndType,specList,inpDtype, inpShape)
        if (returnStatus == "violated"):
           return returnStatus
    return returnStatus
-#timeTaken = (time.process_time() - start_time)
 
 
 

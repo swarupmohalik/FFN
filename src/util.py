@@ -8,23 +8,21 @@ import onnxruntime as ort
 
 import numpy as np
 
-def predict_with_onnxruntime(model_def, *inputs):
+def predictWithOnnxruntime(modelDef, *inputs):
     'run an onnx model'
     
-    sess = ort.InferenceSession(model_def.SerializeToString())
+    sess = ort.InferenceSession(modelDef.SerializeToString())
     names = [i.name for i in sess.get_inputs()]
 
     inp = dict(zip(names, inputs))
     res = sess.run(None, inp)
 
-    #names = [o.name for o in sess.get_outputs()]
-
     return res[0]
 
-def remove_unused_initializers(model):
+def removeUnusedInitializers(model):
     'return a modified model'
 
-    new_init = []
+    newInit = []
 
     for init in model.graph.initializer:
         found = False
@@ -39,113 +37,75 @@ def remove_unused_initializers(model):
                 break
 
         if found:
-            new_init.append(init)
+            newInit.append(init)
         else:
             print(f"removing unused initializer {init.name}")
 
     graph = onnx.helper.make_graph(model.graph.node, model.graph.name, model.graph.input,
-                                   model.graph.output, new_init)
+                                   model.graph.output, newInit)
 
-    onnx_model = make_model_with_graph(model, graph)
+    onnxModel = makeModelWithGraph(model, graph)
 
-    return onnx_model
+    return onnxModel
 
-def make_model_with_graph(model, graph, ir_version=None, check_model=True):
+def makeModelWithGraph(model, graph, ir_version=None, checkModel=True):
     'copy a model with a new graph'
 
-    onnx_model = onnx.helper.make_model(graph)
-    onnx_model.ir_version = ir_version if ir_version is not None else model.ir_version
-    onnx_model.producer_name = model.producer_name
-    onnx_model.producer_version = model.producer_version
-    onnx_model.domain = model.domain
-    onnx_model.model_version = model.model_version
-    onnx_model.doc_string = model.doc_string
+    onnxModel = onnx.helper.make_model(graph)
+    onnxModel.ir_version = ir_version if ir_version is not None else model.ir_version
+    onnxModel.producer_name = model.producer_name
+    onnxModel.producer_version = model.producer_version
+    onnxModel.domain = model.domain
+    onnxModel.model_version = model.model_version
+    onnxModel.doc_string = model.doc_string
 
-    #print(f"making model with ir version: {model.ir_version}")
+    #print(f"making model with ir version: {model.irVersion}")
     
     if len(model.metadata_props) > 0:
         values = {p.key: p.value for p in model.metadata_props}
-        onnx.helper.set_model_props(onnx_model, values)
+        onnx.helper.set_model_props(onnxModel, values)
 
     # fix opset import
     for oimp in model.opset_import:
-        op_set = onnx_model.opset_import.add()
-        op_set.domain = oimp.domain
-        op_set.version = oimp.version
+        opSet = onnxModel.opset_import.add()
+        opSet.domain = oimp.domain
+        opSet.version = oimp.version
 
-    if check_model:
-        onnx.checker.check_model(onnx_model, full_check=True)
+    if checkModel:
+        onnx.checker.check_model(onnxModel, full_check=True)
 
-    return onnx_model
-
-def glue_models(model1, model2):
-    'glue the two onnx models into one'
-
-    g1_in, g1_out = get_io_nodes(model1)
-    g2_in, _ = get_io_nodes(model2)
-    
-    assert g1_out.name == g2_in.name, f"model1 output was {g1_out.name}, " + \
-        f"but model2 input was {g2_in.name}"
-
-    graph1 = model1.graph
-    graph2 = model2.graph
-
-    var_in = [g1_in]
-
-    # sometimes initializers are added as inputs
-    #for inp in graph2.input[1:]:
-    #    var_in.append(inp)
-    
-    var_out = graph2.output
-
-    combined_init = []
-    names = []
-    for init in chain(graph1.initializer, graph2.initializer):
-        assert init.name not in names, f"repeated initializer name: {init.name}"
-        names.append(init.name)
-
-        combined_init.append(init)
-
-    #print(f"initialier names: {names}")
-
-    combined_nodes = []
-    #names = []
-    for n in chain(graph1.node, graph2.node):
-        #assert n.name not in names, f"repeated node name: {n.name}"
-        #names.append(n.name)
-
-        combined_nodes.append(n)
-
-    name = graph2.name
-    graph = onnx.helper.make_graph(combined_nodes, name, var_in,
-                       var_out, combined_init)
-
-    #print(f"making model with inputs {inputs} / outputs {outputs} and nodes len: {len(keep_nodes)}")
-
-    # use ir_version 4 because we don't add inputs as initializers
-    onnx_model = make_model_with_graph(model2, graph, ir_version=4)
-
-    return onnx_model
+    return onnxModel
 
 def findObjectiveFuncionType(spec,numOutputs):
-   N=dict.fromkeys(range(numOutputs),0)
-   M=dict.fromkeys(range(numOutputs),0)
+   'find target output label ant its objective type from property spec matrix'
+
+   #initilization with 0
+   targetDic=dict.fromkeys(range(numOutputs),0)
+   objDic=dict.fromkeys(range(numOutputs),0)
+
+   '''Check all binary expression to find output variable with 
+   maximum nonzero value (target label) and maximum negative value
+   if both are same then target label is for maximization since 
+   <= used in all expressions, else target label is for minimization
+   '''
+
    for j in range(len(spec)):
-       arr=spec[j][0]
-       print(arr)
+       arr=spec[j][0] #get mat from propery matrix -[mat,rhs]
        for k in range(len(arr)):
            for kk in range(len(arr[k])):
               if (arr[k][kk] != 0):
-                 a=N.get(kk)+1
-                 N[kk]=a
+                 cntr=targetDic.get(kk)+1
+                 targetDic[kk]=cntr
               if (arr[k][kk] < 0):
-                 a=M.get(kk)+1
-                 M[kk]=a
+                 cntr=objDic.get(kk)+1
+                 objDic[kk]=cntr
 
-   target=max(N, key=N.get)
-   objType=max(N, key=M.get)
+   target=max(targetDic, key=targetDic.get)
+   objType=max(objDic, key=objDic.get)
+
    output=[]
    output.append(target)
+
    if (target == objType) :
       output.append(0) #Maximization
       print("Target:",target,"Objective :Max",)
@@ -154,19 +114,19 @@ def findObjectiveFuncionType(spec,numOutputs):
       print("Target:",target,"Objective :Min",)
    return output
 
-def checkAndSegregateSamplesForMaximum(posSample,negSample, smple,oldPos,targetNode):      
+def checkAndSegregateSamplesForMaximization(posSample,negSample, smple,oldPos,targetNode):      
     a=smple[0][1]
     large = a[targetNode]
-    last_index=0
+    lastIndex=0
     posSample.append(smple[0])
     for i in range(1,len(smple)):
         a=smple[i][1]
         newLarge = a[targetNode]
         if newLarge > large :
-            posSample.remove(smple[last_index])
+            posSample.remove(smple[lastIndex])
             posSample.append(smple[i])
-            negSample.append(smple[last_index])
-            last_index=i
+            negSample.append(smple[lastIndex])
+            lastIndex=i
             large=newLarge
         else:
             if newLarge < large :
@@ -179,19 +139,19 @@ def checkAndSegregateSamplesForMaximum(posSample,negSample, smple,oldPos,targetN
             posSample.remove(posSample[0])
             posSample.append(oldPos[0])
 
-def checkAndSegregateSamplesForMinimum(posSample,negSample, smple,oldPos,targetNode):      
+def checkAndSegregateSamplesForMinimization(posSample,negSample, smple,oldPos,targetNode):      
     a=smple[0][1]
     small = a[targetNode]
-    last_index=0
+    lastIndex=0
     posSample.append(smple[0])
     for i in range(1,len(smple)):
         a=smple[i][1]
         newSmall = a[targetNode]
         if newSmall < small :
-            posSample.remove(smple[last_index])
+            posSample.remove(smple[lastIndex])
             posSample.append(smple[i])
-            negSample.append(smple[last_index])
-            last_index=i
+            negSample.append(smple[lastIndex])
+            lastIndex=i
             small=newSmall
         else:
             if newSmall < small :
