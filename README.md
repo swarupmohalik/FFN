@@ -17,8 +17,11 @@ A. Folder structure
       c) category_instance.csv files -- provide instances to be run for that category 
 
       Format of category_instance.csv is  - ".onnx file path,.vnnlib file path,timeout"
+
       -- These file paths provide path for .onnx files and .vnnlib files inside the category 
+
       -- To find the absolute path of onnx files and .vnnlib files for this category - 
+
               -- need to prepend the path of this category folder before the paths specified in this category_instance.csv
         
 
@@ -30,7 +33,7 @@ B: Getting Started
    -------------------------
 
 1. Run using Docker 
-   --------------------------
+-----------------------------
     The Dockerfile shows how to install all the dependencies (mostly python and numpy packages) and set up the environment. 
 
     To build an image
@@ -42,7 +45,7 @@ B: Getting Started
     sudo docker run -i -t ffn_image bash
 
 2. Run without docker 
-   ------------------------
+------------------------
 
    ---tested on Ubuntu 18.04 and 20.04
    
