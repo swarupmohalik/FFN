@@ -38,7 +38,7 @@ B: Getting Started
 
     To build an image
     -----------------
-    sudo docker build . -t ffn_image 
+    sudo docker build . -t ffn_image --no-cache
 
     To get a shell after building the image:
     -------------------------------------------
