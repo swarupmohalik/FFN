@@ -53,18 +53,23 @@ B: Getting Started
     #Intall Docker Engine - please refer https://docs.docker.com/engine/install/ubuntu/
     #The Dockerfile in FFN folder shows how to install all the dependencies (mostly python and numpy packages) and set up the environment. 
 
-    To build an image
-    -----------------
+   To build an image
+    
     sudo docker build . -t ffn_image 
 
-    To get a shell after building the image:
-    -------------------------------------------
+   To get a shell after building the image:
+  
     sudo docker run -i -t ffn_image bash
+    
+   Run a script without entering in to the the shell:
+   
+    sudo docker run -i -t ffn_image python3 <run_single_instance.py> <onnx_file> <vnnlibfile> [-- resultfile resultfile] [ -- timeout timeout]
+
 
 3-b. Run without docker 
 
 
-   ---tested on Ubuntu 18.04 and 20.04
+   tested on Ubuntu 18.04 and 20.04
    
    a) Run in Ubuntu 20.04
    --------------------------
