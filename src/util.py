@@ -1,6 +1,5 @@
 import numpy as np
 import re
-import subprocess
 from itertools import chain
 
 import onnx
