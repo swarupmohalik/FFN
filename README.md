@@ -32,21 +32,21 @@ A. Folder structure
 
       ---To create requirements.txt according to the dependencies of FFN propject -
          
-         pip3 install pipreqs
+            pip3 install pipreqs
 
-         pipreqs /home/moumita/Ericsson/test/FFN/ --force
+            pipreqs /home/moumita/Ericsson/test/FFN/ --force
        
   
    
 B: Getting Started
    -------------------------
-1. clone FFN repository
+1. clone FFN repository 
 
-   git clone https://github.com/DMoumita/FFN.git
+         git clone https://github.com/DMoumita/FFN.git
 
 2. Entering into FFN directory
-
-   cd FFN
+      
+         cd FFN
 
 3-a. Run using Docker 
 
@@ -89,7 +89,7 @@ C. Evaluation
    ---------------
 1: To run a single instance
    ------------------------------
-python3 run_single_instance.py <onnx_file_path> <vnnlib_file_path> [result_file_path] [timeout_parameter]
+      python3 run_single_instance.py <onnx_file_path> <vnnlib_file_path> [result_file_path] [timeout_parameter]
 
 
 Example run:
@@ -112,7 +112,7 @@ b. python3 run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.
 
 2: To run all instances of a given benchmark category (from "benchmark" folder)
    ---------------------------------------------------------------------------
-python3 run_all_categories.py  [category] [result_file_path]
+      python3 run_all_categories.py  [category] [result_file_path]
 
 Example run:
 
