@@ -39,15 +39,15 @@ A. Folder structure
 B: Getting Started
    -------------------------
 1. clone FFN repository
-------------------------------
+
    git clone https://github.com/DMoumita/FFN.git
 
 2. Entering into FFN directory
----------------------------------
+
    cd FFN
 
 3-a. Run using Docker 
------------------------------
+
     #Intall Docker Engine - please refer https://docs.docker.com/engine/install/ubuntu/
     #The Dockerfile in FFN folder shows how to install all the dependencies (mostly python and numpy packages) and set up the environment. 
 
@@ -60,7 +60,7 @@ B: Getting Started
     sudo docker run -i -t ffn_image bash
 
 3-b. Run without docker 
-------------------------
+
 
    ---tested on Ubuntu 18.04 and 20.04
    
