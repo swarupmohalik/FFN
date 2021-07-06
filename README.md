@@ -30,7 +30,7 @@ A. Folder structure
    6. Dockerfile -contains docker build and run commands as discussed below
    7. requirements.txt -- contains dependency list those to be installed during docker build
 
-      ---To create requirements.txt according to the dependencies of FFN propject -
+      ---To create requirements.txt according to the dependencies of FFN project -
          
             pip3 install pipreqs
 
