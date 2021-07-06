@@ -1,6 +1,5 @@
 import sys
 import csv
-import subprocess
 import signal
 import string
 from run_single_instance import runSingleInstanceForAllCategory
