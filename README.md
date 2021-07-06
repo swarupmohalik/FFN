@@ -31,6 +31,8 @@ A. Folder structure
    7. requirements.txt -- contains dependency list those to be installed during docker build
 
       ---To create requirements.txt according to the dependencies of FFN propject -
+         
+         pip3 install pipreqs
 
          pipreqs /home/moumita/Ericsson/test/FFN/ --force
        
@@ -87,12 +89,12 @@ C. Evaluation
    ---------------
 1: To run a single instance
    ------------------------------
-python run_single_instance.py <onnx_file_path> <vnnlib_file_path> [result_file_path] [timeout_parameter]
+python3 run_single_instance.py <onnx_file_path> <vnnlib_file_path> [result_file_path] [timeout_parameter]
 
 
 Example run:
 
-a. python run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib result_file 10
+a. python3 run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib result_file 10
 
  ---It evaluates "acasxu" benchmark Property 2 for network ACASXU_run2a_1_1_batch_2000.nnet
  
@@ -100,7 +102,7 @@ a. python run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.o
  
  ---timeout parameter is set as 10 sec
 
-b. python run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib 
+b. python3 run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib 
 
  ---It evaluates "acasxu" benchmark Property 2 for network ACASXU_run2a_1_1_batch_2000.nnet
  
@@ -110,17 +112,17 @@ b. python run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.o
 
 2: To run all instances of a given benchmark category (from "benchmark" folder)
    ---------------------------------------------------------------------------
-python run_all_categories.py  [category] [result_file_path]
+python3 run_all_categories.py  [category] [result_file_path]
 
 Example run:
 
-a. python run_all_categories.py acasxu Report 
+a. python3 run_all_categories.py acasxu Report 
 
  ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "acasxu" benchmark category 
  
  ---After evalauation result is stored in Report
 
-b. python run_all_categories.py 
+b. python3 run_all_categories.py 
 
  ---Default category is - "test"
  ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "test" benchmark category 
