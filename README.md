@@ -135,6 +135,6 @@ b.
  ---Default category is - "test"
  ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "test" benchmark category 
  
- ---After evalauation result is stored in "Report_test.txt" (default)
+ ---After evalauation result is stored in "report_test.txt" (default)
 
 ***Note: Since FFN has randomization, results may vary accross the runs.
