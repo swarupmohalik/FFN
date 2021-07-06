@@ -22,7 +22,7 @@ A. Folder structure
 
       -- To find the absolute path of onnx files and .vnnlib files for this category - 
 
-              -- need to prepend the ategory folder path before the paths specified in this category_instance.csv
+         -- need to prepend the ategory folder path before the paths specified in this category_instance.csv
         
 
    4. run_single_instance.py -- script to run a single instancei, how to run is given in "C"
@@ -94,15 +94,19 @@ C. Evaluation
 
 Example run:
 
-a. python3 run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib result_file 10
-
+a.
+   
+      python3 run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib result_file 10
+      
  ---It evaluates "acasxu" benchmark Property 2 for network ACASXU_run2a_1_1_batch_2000.nnet
  
  ---After evaluation, result is stored in result_file
  
  ---timeout parameter is set as 10 sec
 
-b. python3 run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib 
+b. 
+   
+      python3 run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib 
 
  ---It evaluates "acasxu" benchmark Property 2 for network ACASXU_run2a_1_1_batch_2000.nnet
  
@@ -116,13 +120,17 @@ b. python3 run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.
 
 Example run:
 
-a. python3 run_all_categories.py acasxu Report 
+a. 
+
+      python3 run_all_categories.py acasxu Report 
 
  ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "acasxu" benchmark category 
  
  ---After evalauation result is stored in Report
 
-b. python3 run_all_categories.py 
+b.
+
+      python3 run_all_categories.py 
 
  ---Default category is - "test"
  ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "test" benchmark category 
