@@ -1,5 +1,3 @@
-import subprocess
-import codecs
 import sys
 import time
 import signal
