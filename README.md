@@ -27,24 +27,39 @@ A. Folder structure
 
    4. run_single_instance.py -- script to run a single instancei, how to run is given in "C"
    5. run_all_categories.py --to run all instances from a given category, how to run us given in "C" 
+   6. Dockerfile -contains docker build and run commands as discussed below
+   7. requirements.txt -- contains dependency list those to be installed during docker build
+
+      ---To create requirements.txt according to the dependencies of FFN propject -
+
+         pipreqs /home/moumita/Ericsson/test/FFN/ --force
+       
   
    
 B: Getting Started
    -------------------------
+1. clone FFN repository
+------------------------------
+   git clone https://github.com/DMoumita/FFN.git
 
-1. Run using Docker 
+2. Entering into FFN directory
+---------------------------------
+   cd FFN
+
+3-a. Run using Docker 
 -----------------------------
-    The Dockerfile shows how to install all the dependencies (mostly python and numpy packages) and set up the environment. 
+    #Intall Docker Engine - please refer https://docs.docker.com/engine/install/ubuntu/
+    #The Dockerfile in FFN folder shows how to install all the dependencies (mostly python and numpy packages) and set up the environment. 
 
     To build an image
     -----------------
-    sudo docker build . -t ffn_image --no-cache
+    sudo docker build . -t ffn_image 
 
     To get a shell after building the image:
     -------------------------------------------
     sudo docker run -i -t ffn_image bash
 
-2. Run without docker 
+3-b. Run without docker 
 ------------------------
 
    ---tested on Ubuntu 18.04 and 20.04
