@@ -22,7 +22,7 @@ A. Folder structure
 
       -- To find the absolute path of onnx files and .vnnlib files for this category - 
 
-         -- need to prepend the ategory folder path before the paths specified in this category_instance.csv
+         -- need to prepend the category folder path before the paths specified in this category_instance.csv
         
 
    4. run_single_instance.py -- script to run a single instancei, how to run is given in "C"
@@ -138,7 +138,7 @@ b.
       python3 run_all_categories.py 
 
  ---Default category is - "test"
- ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "test" benchmark category 
+ ---It evaluates all networks(.onnx files in test directory) for all the properies(all .vnnlib files in test directory) from "test" benchmark category 
  
  ---After evalauation result is stored in "report_test.txt" (default)
 
