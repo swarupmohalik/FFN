@@ -17,8 +17,8 @@ parser.add_argument('--category',
                     help='An optional benchmark category')
 
 # Optional report filepath
-parser.add_argument('--reportfile',
-                    help='An optional report file path')
+parser.add_argument('--resultfile',
+                    help='An optional result file path')
 
 args = parser.parse_args()
 category = args.category
