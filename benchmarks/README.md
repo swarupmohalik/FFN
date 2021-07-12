@@ -78,3 +78,8 @@ For both the networks we suggest 20(randomly selected) images:
 for the average pooling network with a perturbation radii of 0.02 and 0.04 and a timeout of 5 minutes.
 for the max pooling network with a perturbation radii of 0.004 and a timeout of 7 minutes.
 The network expects the input image to be a Tensor of size (Nx1x28x28)[i.e NCHW] and normalized between [0,1].
+
+test
+----------
+The folder contains acasxu networks 1-6 (unsat), 1-7 (sat).
+The properties correspond to property 3 of acasxu benchmark
