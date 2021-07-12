@@ -94,18 +94,18 @@ C. Evaluation
    ---------------
 1: To run a single instance
    ------------------------------
-      python3 run_single_instance.py <onnx_file_path> <vnnlib_file_path> [result_file_path] [timeout_parameter]
+      python3 run_single_instance.py <onnx_file_path> <vnnlib_file_path> [--resultfile result_file_path] [--timeout timeout_parameter]
 
 
 Example run:
 
 a.
    
-      python3 run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib result_file 10
+      python3 run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib --resultfile report.txt --timeout 10
       
  ---It evaluates "acasxu" benchmark Property 2 for network ACASXU_run2a_1_1_batch_2000.nnet
  
- ---After evaluation, result is stored in result_file
+ ---After evaluation, result is stored in "report.txt"
  
  ---timeout parameter is set as 10 sec
 
@@ -121,17 +121,17 @@ b.
 
 2: To run all instances of a given benchmark category (from "benchmark" folder)
    ---------------------------------------------------------------------------
-      python3 run_all_categories.py  [category] [result_file_path]
+      python3 run_all_categories.py  [--category category] [--resultfile result_file_path]
 
 Example run:
 
 a. 
 
-      python3 run_all_categories.py acasxu Report 
+      python3 run_all_categories.py --category acasxu --resultfile report.txt 
 
  ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "acasxu" benchmark category 
  
- ---After evalauation result is stored in Report
+ ---After evalauation result is stored in report.txt
 
 b.
 
