@@ -18,14 +18,14 @@ cifar0-resnet
 
 This benchmark contains two adversarially trained residual networks (ResNet) models on CIFAR-10 with the following structures:
 
-     ResNet-2B with 2 residual blocks: 5 convolutional layers + 2 linear layers
-     ResNet-4B with 4 residual blocks: 9 convolutional layers + 2 linear layers
+   ResNet-2B with 2 residual blocks: 5 convolutional layers + 2 linear layers
+   ResNet-4B with 4 residual blocks: 9 convolutional layers + 2 linear layers
 
-     Activation function : ReLU
+   Activation function : ReLU
 
-     48 images from the test set for the ResNet-2B and 24 images for the ResNet-4B.
+   48 images from the test set for the ResNet-2B and 24 images for the ResNet-4B.
 
-     L∞ perturbation ε=2/255 on input for ResNet-2B and ε=1/255 for ResNet-4B. 
+   L∞ perturbation ε=2/255 on input for ResNet-2B and ε=1/255 for ResNet-4B. 
 
 
 marabou-cifar10
@@ -42,17 +42,17 @@ This benchmark contains-
      cifar-10 convolutional networks
      The epsilon values of the L_oo ball for the CIFAR10 networks are 2/255 and 8/255. 
 
-     ACtvation function used : ReLU
+   Actvation function used : ReLU
 
 nn4sys
 -----------
 This benchmark is for verifying learned indexes of databases. To meet the high precision requirement,
 the indexing is completed by two stages. 
 
-    In the first stage, index space is divided into N pieces. A network called v1-network predicts the index of the
-    key roughly to know in which piece the index locates.
+   In the first stage, index space is divided into N pieces. A network called v1-network predicts the index of the
+   key roughly to know in which piece the index locates.
 
-    Then in the second state, the corresponding v2-network that is specifically trained for this piece predicts the acurate index of the key.
+   Then in the second state, the corresponding v2-network that is specifically trained for this piece predicts the acurate index of the key.
 
 
 In this benchmark, the v1-network is a 5 layer fully connected network, with 100 neurons each hidden layer. 
