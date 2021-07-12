@@ -1,130 +1,80 @@
-FFN : Fast Falsification of Neural Networks using Property Directed Testing
-----------------------------------------------------------------------------
 
-A. Folder structure
-   -------------------
-
-   1. README
-   2. src  -- contains python source files
-   3. benchmarks -- contains different benchmark categories
-
-      Each category mainly contains - 
-
-      a) .onnx files -- NN is given in .onnx file format
-
-      b) .vnnlib files  -- provide normalized input ranges and property specifications
-
-      c) category_instance.csv files -- provide instances to be run for that category 
-
-      Format of category_instance.csv is  - ".onnx file path,.vnnlib file path,timeout"
-
-      -- These file paths provide path for .onnx files and .vnnlib files inside the category 
-
-      -- To find the absolute path of onnx files and .vnnlib files for this category - 
-
-              -- need to prepend the ategory folder path before the paths specified in this category_instance.csv
-        
-
-   4. run_single_instance.py -- script to run a single instancei, how to run is given in "C"
-   5. run_all_categories.py --to run all instances from a given category, how to run us given in "C" 
-   6. Dockerfile -contains docker build and run commands as discussed below
-   7. requirements.txt -- contains dependency list those to be installed during docker build
-
-      ---To create requirements.txt according to the dependencies of FFN propject -
-
-         pipreqs /home/moumita/Ericsson/test/FFN/ --force
-       
-  
-   
-B: Getting Started
-   -------------------------
-1. clone FFN repository
-------------------------------
-   git clone https://github.com/DMoumita/FFN.git
-
-2. Entering into FFN directory
----------------------------------
-   cd FFN
-
-3-a. Run using Docker 
------------------------------
-    #Intall Docker Engine - please refer https://docs.docker.com/engine/install/ubuntu/
-    #The Dockerfile in FFN folder shows how to install all the dependencies (mostly python and numpy packages) and set up the environment. 
-
-    To build an image
-    -----------------
-    sudo docker build . -t ffn_image 
-
-    To get a shell after building the image:
-    -------------------------------------------
-    sudo docker run -i -t ffn_image bash
-
-3-b. Run without docker 
-------------------------
-
-   ---tested on Ubuntu 18.04 and 20.04
-   
-   a) Run in Ubuntu 20.04
-   --------------------------
-     sudo apt update
-     sudo apt install python3
-     sudo apt install python3-pip
-     pip3 install onnx==1.8.0
-     pip3 install onnxruntime==1.8.0
-     pip3 install numpy==1.17.4
-
-   b) Run in Ubuntu 18.04
-   --------------------------
-     sudo apt update
-     sudo apt install python3.6
-     sudo apt install python3-pip
-     pip3 install onnx==1.7.0
-     pip3 install onnxruntime==0.4.0
-     pip3 install numpy==1.17.4
-
-   
-C. Evaluation
-   ---------------
-1: To run a single instance
-   ------------------------------
-python run_single_instance.py <onnx_file_path> <vnnlib_file_path> [result_file_path] [timeout_parameter]
+acasxu
+---------
+This benchmark contains -
+   45 fully connected networks with 6 hidden layers and 5 inputs , 5 outputs and 5 ReLU nodes in each layer.
+   10 properties
 
 
-Example run:
+mnistfc
+---------
+This benchmark contains -
+      3 fully-connected networks with 2, 4 and 6 layers and 256 ReLU nodes in each layer.
+      15 images with l_infty < eps pertubations using eps = 0.03 and eps = 0.05.
 
-a. python run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib result_file 10
 
- ---It evaluates "acasxu" benchmark Property 2 for network ACASXU_run2a_1_1_batch_2000.nnet
- 
- ---After evaluation, result is stored in result_file
- 
- ---timeout parameter is set as 10 sec
+cifar0-resnet
+-------------
 
-b. python run_single_instance.py benchmarks/acasxu/ACASXU_run2a_1_1_batch_2000.onnx benchmarks/acasxu/prop_2.vnnlib 
+This benchmark contains two adversarially trained residual networks (ResNet) models on CIFAR-10 with the following structures:
 
- ---It evaluates "acasxu" benchmark Property 2 for network ACASXU_run2a_1_1_batch_2000.nnet
- 
- ---After evaluation, result is stored in default result file - "out.txt"
- 
- ---timeout parameter is set as 60 sec(default)
+     ResNet-2B with 2 residual blocks: 5 convolutional layers + 2 linear layers
+     ResNet-4B with 4 residual blocks: 9 convolutional layers + 2 linear layers
 
-2: To run all instances of a given benchmark category (from "benchmark" folder)
-   ---------------------------------------------------------------------------
-python run_all_categories.py  [category] [result_file_path]
+     Activation function : ReLU
 
-Example run:
+     48 images from the test set for the ResNet-2B and 24 images for the ResNet-4B.
 
-a. python run_all_categories.py acasxu Report 
+     L∞ perturbation ε=2/255 on input for ResNet-2B and ε=1/255 for ResNet-4B. 
 
- ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "acasxu" benchmark category 
- 
- ---After evalauation result is stored in Report
 
-b. python run_all_categories.py 
+marabou-cifar10
+-----------------
+This folder contains -
+     targeted robustness query for three convolutional ReLU networks trained on the CIFAR10 dataset.
 
- ---Default category is - "test"
- ---It evaluates all networks(.onnx files in acaxu directory) for all the properies(all .vnnlib files in acasxu directory) from "test" benchmark category 
- 
- ---After evalauation result is stored in "Report_test.txt" (default)
+Details are available in marabou-cifar10/info.txt 
 
-***Note: Since FFN has randomization, results may vary accross the runs.
+cifar-2020
+---------------
+
+This benchmark contains-
+     cifar-10 convolutional networks
+     The epsilon values of the L_oo ball for the CIFAR10 networks are 2/255 and 8/255. 
+
+     ACtvation function used : ReLU
+
+nn4sys
+-----------
+This benchmark is for verifying learned indexes of databases. To meet the high precision requirement,
+the indexing is completed by two stages. 
+
+    In the first stage, index space is divided into N pieces. A network called v1-network predicts the index of the
+    key roughly to know in which piece the index locates.
+
+    Then in the second state, the corresponding v2-network that is specifically trained for this piece predicts the acurate index of the key.
+
+
+In this benchmark, the v1-network is a 5 layer fully connected network, with 100 neurons each hidden layer. 
+Two different settings for the v2-network. 
+      1. N=100, each v2-network is 2 layer fully connected network, with 600 neurons in the hidden layer.
+      2. N=1000, each v2-network is 2 layer fully connected network, with 6 neurons in the hidden layer.
+
+All the layers use ReLU activation except the last layer.
+
+
+oval21
+---------
+This benchmark set includes 3 ReLU-based convolutional networks, provided in the nets folder,
+ which were robustly trained using [1] against l_inf perturbations of radius eps=2/255 on CIFAR10.
+
+
+verivital
+------------
+The benchmarks consist of two MNIST classifiers, one with a maxpooling layer and the other with an average pooling layer.
+
+For both the networks we suggest 20(randomly selected) images:
+
+for the average pooling network with a perturbation radii of 0.02 and 0.04 and a timeout of 5 minutes.
+for the max pooling network with a perturbation radii of 0.004 and a timeout of 7 minutes.
+The network expects the input image to be a Tensor of size (Nx1x28x28)[i.e NCHW] and normalized between [0,1].
