@@ -1,23 +1,38 @@
 import sys
 import csv
 import signal
-import string
+import argparse
 from run_single_instance import runSingleInstanceForAllCategory
 
 
 'Main function'
 
 #Commandline arguments processing
-try:
-    category = sys.argv[1]
-except:
+
+# Instantiate the parser
+parser = argparse.ArgumentParser(description='FFN run all instances description')
+
+# Optional benchmark category
+parser.add_argument('--category',
+                    help='An optional benchmark category')
+
+# Optional report filepath
+parser.add_argument('--reportfile',
+                    help='An optional report file path')
+
+args = parser.parse_args()
+category = args.category
+
+#Set default categery 
+if ( category is None ):
     category = "test"
     print ("\n!!! No benchmark category is provided on the command line!")
     print ("Default benchmark category is taken as - \"test\"")
 
-try:
-    reportFile = sys.argv[2]
-except:
+reportFile = args.reportfile
+
+#Set default reportFile path
+if ( reportFile is None ):
     reportFile ="report_"+category+".txt"
     print ("\n!!! No result_file is provided on the command line!")
     print (" Taking default result_file -\"{0}\"".format(reportFile))

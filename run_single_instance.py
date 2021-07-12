@@ -1,6 +1,7 @@
 import sys
 import time
 import signal
+import argparse
 
 from src.FFNEvaluation import sampleEval
 
@@ -43,24 +44,49 @@ def runSingleInstance(onnxFile,vnnlibFile,resultFile,timeout):
 
 #Main function
 if __name__ == '__main__':
+
    #Commandline arguments processing
+
+   # Instantiate the parser
+   parser = argparse.ArgumentParser(description='Optional app description')
+
+   # Required onnx file path 
+   parser.add_argument('onnxfile',
+                    help='A required onnx model file path')
+
+   # Required vnnlib file path
+   parser.add_argument('vnnlibfile', 
+                    help='A required vnnlib file path')
+
+   # Optional resultfile path
+   parser.add_argument('--resultfile',
+                    help='An optional result file path')
+
+   # optional timeout parameter
+   parser.add_argument('--timeout',
+                    help='An optional timeout')
+
+   args = parser.parse_args()
    try:
-      onnxFile = sys.argv[1]
-      vnnlibFile = sys.argv[2]
+      onnxFile = args.onnxfile
+      vnnlibFile = args.vnnlibfile
    except:
       print ("\n!!! Failed to provide onnx file and vnnlib file path on the command line!")
       sys.exit(1)  # Exit from program
 
-   try:
-      resultFile = sys.argv[3]
-   except:
+
+   resultFile = args.resultfile 
+
+   #Set default for resultFile
+   if ( resultFile is None ):
       print ("\n!!! No result_file path is provided on the command line!")
       print ("Default result_file is - out.txt")
       resultFile = "out.txt"
 
-   try:
-      timeout = float(sys.argv[4])
-   except:
+   timeout = args.timeout
+
+   #Set default for timeout
+   if ( timeout is None ):
       print ("\n!!! timeout is not on the command line!")
       print ("Default timeout is set as - 60 sec")
       timeout = 60.0
