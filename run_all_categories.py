@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser(description='FFN run all instances description'
 parser.add_argument('--category',
                     help='An optional benchmark category')
 
-# Optional report filepath
+# Optional result filepath
 parser.add_argument('--resultfile',
                     help='An optional result file path')
 
@@ -29,9 +29,9 @@ if ( category is None ):
     print ("\n!!! No benchmark category is provided on the command line!")
     print ("Default benchmark category is taken as - \"test\"")
 
-reportFile = args.reportfile
+reportFile = args.resultfile
 
-#Set default reportFile path
+#Set default resultFile path
 if ( reportFile is None ):
     reportFile ="report_"+category+".txt"
     print ("\n!!! No result_file is provided on the command line!")
