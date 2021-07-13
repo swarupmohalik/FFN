@@ -61,6 +61,14 @@ Two different settings for the v2-network.
       2. N=1000, each v2-network is 2 layer fully connected network, with 6 neurons in the hidden layer.
 
 All the layers use ReLU activation except the last layer.
+            
+           
+
+**Note : All networks are big in size, hence stored in .gz format. Please unzip all networks before run using -
+           
+         gzip -d <.gz file>
+         
+**Note : Replace all .gz file path by .onnx filepath nn4sys_instances.csv 
 
 
 oval21
