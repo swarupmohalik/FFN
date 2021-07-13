@@ -1,6 +1,5 @@
 #vnnlib simple utilities
 
-
 from copy import deepcopy
 import re
 

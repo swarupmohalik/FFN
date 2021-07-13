@@ -1,8 +1,6 @@
 import numpy as np
-import math
 import time
 import random
-import re
 import numpy
 import onnx
 import onnxruntime as rt
@@ -14,7 +12,10 @@ from src.vnnlib import readVnnlib, getIoNodes
 from src.util import predictWithOnnxruntime, removeUnusedInitializers
 from src.util import  findObjectiveFuncionType, checkAndSegregateSamplesForMaximization, checkAndSegregateSamplesForMinimization
 
+'Number of times FFN runs'
 numRuns=100
+
+'Number of samples in each FFN run'
 numSamples=150
 
 def onnxEval(onnxModel,inVals,inpDtype, inpShape):
@@ -39,8 +40,7 @@ def propCheck(inputs,specs,outputs):
           break
 
    if res == 'violated':
-      print("Adversarial inputs found !!!")
-      print("Adversarial inputs are :  ", inputs)
+      print("\nAdversarial inputs found - ",inputs)
       return 1
 
    return 0
@@ -66,7 +66,13 @@ def learning(cpos,cneg,iRange,numInputs):
 
 def makeSample(onnxModel,numInputs,inRanges,samples,specs,inpDtype, inpShape):
     sampleInputList=[]
+    
+    'Generates all samples and strored in a list (sampleInputList)'
     for k in range(numSamples):
+        
+        'Checking for duplicate sample values'
+        'If duplicate found, generates another sample value'
+        'This checking is done for 5 times with a hope that it will generate a new one within these 5 times'
         j=0
         while (j<5):
             inValues=[]
@@ -104,6 +110,7 @@ def runSample(onnxModel,numInputs,numOutputs,inputRange,tAndOT,spec,inpDtype,inp
     target = tAndOT[0] #target output label for maximization/minimization
     objectiveType = tAndOT[1] #0 for maximization, 1 for minimization
 
+    'Run FFN for numRuns'
     for k in range(numRuns):
         samples = []
         posSamples = []
@@ -114,14 +121,15 @@ def runSample(onnxModel,numInputs,numOutputs,inputRange,tAndOT,spec,inpDtype,inp
         if ( ret == 1): #Adversarial found
            return "violated"
 
+        'Segregate sample list into psitive and negative samples according to the objective type found'
         if ( objectiveType == 1) :
            checkAndSegregateSamplesForMinimization(posSamples,negSamples,samples,oldPosSamples,target)
         else:
            checkAndSegregateSamplesForMaximization(posSamples,negSamples,samples,oldPosSamples,target)
         oldPosSamples = posSamples
 
-        #Check input ranges for further sampling 
-        #Discintinues if all input ranges are below a theshold value(0.000001)
+        'Check input ranges for further sampling'
+        'Discontinues if all the input ranges are below a theshold value(0.000001)'
         flag = False
         for i in range(numInputs):
             if ( inputRange[i][1] - inputRange[i][0] > 0.000001):

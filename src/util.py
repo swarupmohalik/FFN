@@ -107,10 +107,10 @@ def findObjectiveFuncionType(spec,numOutputs):
 
    if (target == objType) :
       output.append(0) #Maximization
-      print("Target:",target,"Objective :Max",)
+      #print("Target:",target,"Objective :Max",)
    else:
       output.append(1) #Minimization
-      print("Target:",target,"Objective :Min",)
+      #print("Target:",target,"Objective :Min",)
    return output
 
 def checkAndSegregateSamplesForMaximization(posSample,negSample, smple,oldPos,targetNode):      
