@@ -7,7 +7,7 @@ from src.FFNEvaluation import sampleEval
 
 # Register an handler for the timeout
 def handler(signum, frame):
-    raise Exception("kill running :: Timeout occurs")
+    raise Exception("")#kill running :: Timeout occurs")
 
 def runSingleInstanceForAllCategory(onnxFile,vnnlibFile,resultFile,timeout):
    'called from run_all_catergory.py'
