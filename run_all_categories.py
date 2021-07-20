@@ -60,7 +60,7 @@ for row in reader:
        continue
     timeout = row[2]
 
-    resultStr = runSingleInstanceForAllCategory(onnxFile,vnnlibFile,"out.txt",timeout)
+    resultStr = runSingleInstanceForAllCategory(onnxFile,vnnlibFile,timeout)
     if (not resultStr):
        resultStr = "timeout,"+timeout
 
