@@ -31,6 +31,11 @@ def runSingleInstance(onnxFile,vnnlibFile):
    #Variable Initialization
    startTime = time.time()
 
+   onnxFileName = onnxFile.split('/')[-1]
+   vnnFileName = vnnlibFile.split('/')[-1]
+
+   print(f"\nTesting network model {onnxFileName} for property file {vnnFileName}")
+
    'Calling sampleEval until any adversarial found or timout ocuurs'
    while(1):
        status = sampleEval(onnxFile,vnnlibFile)
