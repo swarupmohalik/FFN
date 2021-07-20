@@ -9,7 +9,7 @@ from src.FFNEvaluation import sampleEval
 def handler(signum, frame):
     raise Exception("")#kill running :: Timeout occurs")
 
-def runSingleInstanceForAllCategory(onnxFile,vnnlibFile,resultFile,timeout):
+def runSingleInstanceForAllCategory(onnxFile,vnnlibFile,timeout):
    'called from run_all_catergory.py'
 
    # Register the signal function handler
@@ -21,13 +21,13 @@ def runSingleInstanceForAllCategory(onnxFile,vnnlibFile,resultFile,timeout):
    '"runSingleInstance" will continue until any adversarial found or timeout occurs'
    'When timeout occurs codes written within exception will be executed'
    try:
-       retStatus = runSingleInstance(onnxFile,vnnlibFile,resultFile)
+       retStatus = runSingleInstance(onnxFile,vnnlibFile)
        return retStatus
    except Exception as exc:
        #printStr = "timeout," + str(timeout) + "\n" 
        print(exc)
 
-def runSingleInstance(onnxFile,vnnlibFile,resultFile):
+def runSingleInstance(onnxFile,vnnlibFile):
    #Variable Initialization
    startTime = time.time()
 
@@ -117,7 +117,7 @@ if __name__ == '__main__':
    '"runSingleInstance" will continue until any adversarial found or timeout occurs'
    'When timeout occurs codes written within exception will be executed'
    try:
-       retStatus = runSingleInstance(onnxFile,vnnlibFile,resultFile)
+       retStatus = runSingleInstance(onnxFile,vnnlibFile)
        outFile = open(resultFile, "w")
        #print("\nOutput is written in - \"{0}\"".format(resultFile))
        outFile.write(retStatus)
