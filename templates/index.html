@@ -1,1 +1,27 @@
-
+<!doctype html>
+<html>
+  <head>
+    <title>FFN</title>
+  </head>
+  <body style="background-color:powderblue;">
+    <h1>FFN - checks your network model for a property</h1>
+    <h2>Inputs</h2>
+    <form method="POST" action="" enctype="multipart/form-data">
+      <p>
+      <label for="file1">Select .onnx file:</label>
+      <input type="file" name="file1">
+      </p>
+      <p>
+      <label for="file2">Select .vnnlib file:</label>
+      <input type="file" name="file2">
+      </p>
+      <p>
+      <label for="timeout">timeout value:</label>
+      <input name="timeout">
+      </p>
+      <p><input type="submit" value="Call FFN"></p>
+    <h2>Outputs</h2>
+    <span style="white-space: pre-line">{{output}}</span>
+    </form>
+  </body>
+</html>
