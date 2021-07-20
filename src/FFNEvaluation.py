@@ -137,9 +137,9 @@ def runSample(onnxModel,numInputs,numOutputs,inputRange,tAndOT,spec,inpDtype,inp
                break
 
         if( flag == False):
-           print("!!! No further sampling Possible for this iteration!!!")
-           print("Inputs are now :: ", inputRange)
-           print("STATUS :: unknown")
+           #print("!!! No further sampling Possible for this iteration!!!")
+           #print("Inputs are now :: ", inputRange)
+           #print("STATUS :: unknown")
            return "unknown"
 
         learning(posSamples,negSamples,inputRange,numInputs)
@@ -169,8 +169,6 @@ def sampleEval(onnxFilename,vnnlibFilename):
    #Number of outputs
    for n in outShape:
        numOutputs *= n
-
-   print(f"\nTesting onnx model-\"{onnxFilename}\" with {numInputs} inputs and {numOutputs} outputs for \"{vnnlibFilename}\"")
 
    #parsing vnnlib file, get a list of input ranges and property matrix  
    boxSpecList = readVnnlib(vnnlibFilename, numInputs, numOutputs)
