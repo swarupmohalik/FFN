@@ -40,7 +40,7 @@ def propCheck(inputs,specs,outputs):
           break
 
    if res == 'violated':
-      print("\nAdversarial inputs found - ",inputs)
+      print("\nAdversarial inputs found for - ",inputs)
       return 1
 
    return 0
@@ -137,9 +137,9 @@ def runSample(onnxModel,numInputs,numOutputs,inputRange,tAndOT,spec,inpDtype,inp
                break
 
         if( flag == False):
-           print("!!! No further sampling Possible for this iteration!!!")
-           print("Inputs are now :: ", inputRange)
-           print("STATUS :: unknown")
+           #print("!!! No further sampling Possible for this iteration!!!")
+           #print("Inputs are now :: ", inputRange)
+           #print("STATUS :: unknown")
            return "unknown"
 
         learning(posSamples,negSamples,inputRange,numInputs)
@@ -157,8 +157,6 @@ def sampleEval(onnxFilename,vnnlibFilename):
    inpShape = tuple(d.dim_value if d.dim_value != 0 else 1 for d in inp.type.tensor_type.shape.dim)
    outShape = tuple(d.dim_value if d.dim_value != 0 else 1 for d in out.type.tensor_type.shape.dim)
    
-
-
    numInputs = 1
    numOutputs = 1
 
@@ -170,7 +168,9 @@ def sampleEval(onnxFilename,vnnlibFilename):
    for n in outShape:
        numOutputs *= n
 
-   print(f"\nTesting onnx model-\"{onnxFilename}\" with {numInputs} inputs and {numOutputs} outputs for \"{vnnlibFilename}\"")
+   onnxFile = onnxFilename.split('/')[-1]
+   vnnFile = vnnlibFilename.split('/')[-1]
+
 
    #parsing vnnlib file, get a list of input ranges and property matrix  
    boxSpecList = readVnnlib(vnnlibFilename, numInputs, numOutputs)
